@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Replace webhook URL with yours from discord, logfile with path to your log
+WEBHOOK_URL="https://discordapp.com/api/webhooks/ETC"
+LOGFILE_NAME="./server_log"
+
+# Tail follow file, filter lines which contain verbose
+tail -f $LOGFILE_NAME | grep --line-buffered -v '\[verbose\]' | while read LINE0
+do
+    # Send POST Request to Discord API
+    curl -d "content=$LINE0" -X POST $WEBHOOK_URL
+    echo $LINE0;
+done
